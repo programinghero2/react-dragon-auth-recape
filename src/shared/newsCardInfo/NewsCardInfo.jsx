@@ -2,7 +2,18 @@ import { Link } from "react-router-dom";
 import moment from 'moment';
 
 const NewsCardInfo = ({ item }) => {
-
+    let newLsData = []
+    const handleLocalStr = () => {
+        const getLsData = JSON.parse(localStorage.getItem("newsId"))
+        if (!getLsData) {
+            newLsData.push(item)
+            localStorage.setItem("newsId",JSON.stringify(newLsData))
+        }
+        else{
+            newLsData = [...getLsData,item]
+            localStorage.setItem("newsId",JSON.stringify(newLsData))
+        }
+    }
     return (
         <div className="card card-compact w-full bg-base-100  p-5 border mb-7">
             {/* author details */}
@@ -24,7 +35,7 @@ const NewsCardInfo = ({ item }) => {
                 <figure className="mb-6"><img src={item?.image_url} alt="Shoes" /></figure>
                 <p>{item?.details.slice(0, 200)}</p>
                 <div className="card-actions">
-                    <Link className="text-[#FF8C47]">Read More</Link>
+                    <Link to={`/newsDetails/${item?._id}`} onClick={handleLocalStr} className="text-[#FF8C47]">Read More</Link>
                 </div>
                 {/* rating */}
                 <div className="mb-3 flex justify-between mt-5">

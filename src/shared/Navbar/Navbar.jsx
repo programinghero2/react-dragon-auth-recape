@@ -1,14 +1,24 @@
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const Navbar = () => {
+    const { user,logOut } = useContext(AuthContext)
     const Navitem = () => {
         return (
             <div className="flex gap-3">
                 <li><NavLink to="/">Home</NavLink></li>
                 <li><NavLink to="/about">About</NavLink></li>
                 <li><NavLink to="/carrer">Carrer</NavLink></li>
+                <li><NavLink to="/login">Login</NavLink></li>
+                <li><NavLink to="/register">Register</NavLink></li>
             </div>
         )
+    }
+    const handleLogOut = () => {
+        logOut()
+        .then()
+        .catch()
     }
     return (
         <div className="navbar bg-base-100">
@@ -28,12 +38,22 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                    <div className="w-10 rounded-full">
-                        <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                    </div>
-                </label>
-                <Link className="ml-2 btn">Login</Link>
+                {
+                    user ?
+                        <div className="flex items-center gap-3">
+                            <p>{user.email}</p>
+                            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                                <div className="w-10 rounded-full">
+                                    <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                                </div>
+                            </label>
+                            <button onClick={handleLogOut} className="btn btn-ghost">LogOut</button>
+                        </div>
+                        :
+                        <div>
+                            <Link className="ml-2 btn">Login</Link>
+                        </div>
+                }
             </div>
         </div>
     );
